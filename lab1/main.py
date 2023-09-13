@@ -2,7 +2,7 @@ from rules import *
 from production import *
 
 
-class Choice:
+class Choices:
     def __init__(self):
         self.solo_tourist_questions = SoloRules().add()
         self.family_tourist_questions = FamilyRules().add()
@@ -15,7 +15,6 @@ class Choice:
                             LuxuryRules.conclusion,
                             MedicalRules.conclusion
                             ]
-        self.choice = ""
 
     def combine_questions(self):
         return list(
@@ -28,13 +27,14 @@ class Choice:
         )
 
     def forward(self, name):
-        print(f"Choose the facts about you, divided by comma and space (ex: 3, 5, 9): ")
+        print(f"Choose the facts about you, divided by comma and space (example: 1, 2, 3): ")
         for index, fact in enumerate(self.combine_questions()):
             fact = fact.replace("(?x)", "")
-            print(f"\t{index + 1} : {fact}")
-        self.choice = input("Choose:\n")
+            print(f"{index + 1} {fact}")
+        facts = input("Choose:\n")
+        print("-----------------------------")
         chain = []
-        for index in self.choice.split(", "):
+        for index in facts.split(", "):
             try:
                 fact_index = int(index) - 1
                 fact = self.combine_questions()[fact_index]
@@ -50,7 +50,8 @@ class Choice:
                 hints.append(dec_conclusion)
         if not hints:
             return f"{name} might be a Loonie."
-        return hints
+        hints_str = ', '.join(map(str, hints))
+        return hints_str
 
     def backward(self, name):
         print(f"Choose the tourist type from the list to execute backward chaining: ")
@@ -58,10 +59,12 @@ class Choice:
             conclusion = conclusion.replace("(?x)", name)
             print(index + 1, conclusion)
         selected = int(input("Choose: \n"))
+        print("-----------------------------")
         if 0 <= selected < 5:
             goal = (self.conclusions[int(selected) - 1]).replace("(?x)", name)
             backward_chain_result = backward_chain(TOURIST_RULES, goal)
-            return backward_chain_result
+            backward_chain_result_str = ', '.join(map(str, backward_chain_result))
+            return backward_chain_result_str
         else:
             return f"There is no such type of tourist."
 
@@ -72,7 +75,7 @@ if __name__ == '__main__':
     print("Let's find your tourist type.")
     print("-----------------------------")
 
-    choice = Choice()
+    choices = Choices()
 
     while True:
         user_name = input("Please, write your name: \n")
@@ -83,14 +86,13 @@ if __name__ == '__main__':
         algorithm = input("1 forward chaining\n2 backward chaining\n")
         print("-----------------------------")
         if algorithm == "1":
-            print(choice.forward(user_name))
+            print(choices.forward(user_name))
         elif algorithm == "2":
-            print(choice.backward(user_name))
+            print(choices.backward(user_name))
         else:
             print("Please, write a valid number")
         print("-----------------------------")
-        exit_command = input(
-            "Do you want to continue? (write yes/any other input to proceed):\n")
+        exit_command = input("Do you want to continue? (write yes/any key to exit the program):\n")
         print("-----------------------------")
         if exit_command != "yes":
             print("Exiting...")
