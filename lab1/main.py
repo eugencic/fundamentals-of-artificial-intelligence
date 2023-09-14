@@ -27,14 +27,17 @@ class Choices:
         )
 
     def forward(self, name):
-        print(f"Choose the facts about you, divided by comma and space (example: 1, 2, 3): ")
+        print(f"Choose the facts about you:")
+        facts = ""
         for index, fact in enumerate(self.combine_questions()):
             fact = fact.replace("(?x)", "")
-            print(f"{index + 1} {fact}")
-        facts = input("Choose:\n")
+            answer = input(f"{index + 1} {fact} (yes/any key to continue)\n")
+            if answer == "yes":
+                facts = facts + " " + str(index)
+                print(facts)
         print("-----------------------------")
         chain = []
-        for index in facts.split(", "):
+        for index in facts.split(" "):
             try:
                 fact_index = int(index) - 1
                 fact = self.combine_questions()[fact_index]
@@ -77,11 +80,12 @@ if __name__ == '__main__':
 
     choices = Choices()
 
+    user_name = input("Please, write your name: \n")
+    print("-----------------------------")
+    print("Hello, " + user_name + "!")
+    print("-----------------------------")
+
     while True:
-        user_name = input("Please, write your name: \n")
-        print("-----------------------------")
-        print("Hello, " + user_name + "!")
-        print("-----------------------------")
         print("Choose the algorithm you want to use: ")
         algorithm = input("1 forward chaining\n2 backward chaining\n")
         print("-----------------------------")
