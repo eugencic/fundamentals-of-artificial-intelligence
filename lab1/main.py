@@ -34,7 +34,6 @@ class Choices:
             answer = input(f"{index + 1} {fact} (yes/any key to continue)\n")
             if answer == "yes":
                 facts = facts + " " + str(index)
-                print(facts)
         print("-----------------------------")
         chain = []
         for index in facts.split(" "):
