@@ -1,0 +1,20 @@
+region_data = {
+    "Chisinau": 0.1,
+    "Balti": 0.15,
+    "Tiraspol": 0.18,
+    "Cahul": 0.12,
+    "Orhei": 0.11,
+    "Soroca": 0.17,
+    "Comrat": 0.14,
+    "Hincesti": 0.09,
+    "Ungheni": 0.16,
+    "Edinet": 0.13,
+    "Straseni": 0.2,
+    "Riscani": 0.21,
+    "Calarasi": 0.19,
+    "Falesti": 0.22,
+    "Drochia": 0.23,
+    "Causeni": 0.24,
+    "Leova": 0.25,
+    "Ocnita": 0.26
+}
